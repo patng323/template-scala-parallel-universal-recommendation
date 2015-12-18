@@ -22,7 +22,7 @@ def import_events(client, file):
   event_date = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=2.7)
   date_increment = datetime.timedelta(days=0.8)
   available_date = event_date + datetime.timedelta(days=-2)
-  expire_date = event_date + datetime.timedelta(days=2)
+  expire_date = event_date + datetime.timedelta(days=100)
   print "Importing data..."
 
   for line in f:
@@ -90,13 +90,18 @@ if __name__ == '__main__':
   parser.add_argument('--access_key', default='invald_access_key')
   parser.add_argument('--url', default="http://localhost:7070")
   parser.add_argument('--file', default="./data/sample-handmade-data.txt")
+  parser.add_argument('--export', default=False)
 
   args = parser.parse_args()
   print args
 
-  client = predictionio.EventClient(
-    access_key=args.access_key,
-    url=args.url,
-    threads=5,
-    qsize=500)
+  if args.export:
+    client = predictionio.FileExporter('import.txt')
+  else:
+    client = predictionio.EventClient(
+      access_key=args.access_key,
+      url=args.url,
+      threads=5,
+      qsize=500)
+
   import_events(client, args.file)
