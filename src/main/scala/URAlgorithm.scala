@@ -316,10 +316,14 @@ class URAlgorithm(val ap: URAlgorithmParams)
     // part of their use
     val backfillFieldName = ap.backfillField.getOrElse(BackfillField()).name
     val queryAndBlacklist = buildQuery(ap, query, backfillFieldName)
-    val recs = esClient.search(queryAndBlacklist._1, ap.indexName)
+    var recs = esClient.search(queryAndBlacklist._1, ap.indexName)
     // should have all blacklisted items excluded
     // todo: need to add dithering, mean, sigma, seed required, make a seed that only changes on some fixed time
     // period so the recs ordering stays fixed for that time period.
+
+    if (query.getHistory.getOrElse(false) == true) {
+      recs = new PredictedResult(recs.itemScores, queryAndBlacklist._2.map(i => new HistoryItem(i.event, i.targetEntityId.getOrElse(""))).toArray)
+    }
     recs
   }
 
