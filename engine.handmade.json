@@ -25,7 +25,7 @@
       "name": "ur",
       "params": {
         "appName": "handmade",
-        "indexName": "urindex",
+        "indexName": "urindex-handmade",
         "typeName": "items",
         "comment": "must have data for the first event or the model will not build, other events are optional",
         "eventNames": ["purchase", "view"],

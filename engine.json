@@ -5,16 +5,17 @@
   "engineFactory": "org.template.RecommendationEngine",
   "datasource": {
     "params" : {
-      "name": "sample-handmade-data.txt",
-      "appName": "handmade",
-      "eventNames": ["purchase", "view"]
+      "name": "price test data",
+      "appName": "price",
+      "eventNames": ["Primary","PLIView","PReviewView","PMapView","PRNewsView","PView","P2HandView"],
     }
   },
   "sparkConf": {
     "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
     "spark.kryo.registrator": "org.apache.mahout.sparkbindings.io.MahoutKryoRegistrator",
     "spark.kryo.referenceTracking": "false",
-    "spark.kryoserializer.buffer": "300m",
+    "spark.kryoserializer.buffer.mb": "600",
+    "spark.kryoserializer.buffer": "600m",
     "spark.executor.memory": "4g",
     "es.index.auto.create": "true"
   },
@@ -23,11 +24,15 @@
       "comment": "simplest setup where all values are default, popularity based backfill, must add eventsNames",
       "name": "ur",
       "params": {
-        "appName": "handmade",
-        "indexName": "urindex",
+        "appName": "price",
+        "indexName": "urindex-price",
         "typeName": "items",
         "comment": "must have data for the first event or the model will not build, other events are optional",
-        "eventNames": ["purchase", "view"]
+        "eventNames": ["Primary","PLIView","PReviewView","PMapView","PRNewsView","PView","P2HandView"],
+        "availableDateName": "available",
+        "expireDateName": "expires",
+        "dateName": "date",
+        "num": 30
       }
     }
   ]
